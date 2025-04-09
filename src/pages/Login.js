@@ -1,7 +1,10 @@
+// client/src/pages/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 import axios from 'axios';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || "https://uniquecryptowalletserver.vercel.app";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,14 +12,14 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, { username, password });
       localStorage.setItem('token', response.data.token);
       navigate('/dashboard');
     } catch(err) {
-      setError(err.response.data.message || 'Login failed');
+      setError(err.response?.data?.message || 'Login failed');
     }
   };
 
@@ -25,7 +28,6 @@ const Login = () => {
       <div className="auth-card">
         <h2 className="auth-title">Welcome To Unique Crypto Wallet</h2>
         {error && <div className="auth-error">{error}</div>}
-        
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="username">Username</label>
@@ -59,10 +61,7 @@ const Login = () => {
         </form>
 
         <div className="auth-footer">
-          New user?{' '}
-          <a href="/register" className="auth-link">
-            Create an account
-          </a>
+          New user? <a href="/register" className="auth-link">Create an account</a>
         </div>
       </div>
     </div>
