@@ -4,6 +4,8 @@ import axios from 'axios';
 import '../styles/AdminUsers.css';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || "https://uniquecryptowalletserver.vercel.app";
+
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
   const [adminAuth, setAdminAuth] = useState({ username: '', password: '' });
@@ -13,7 +15,7 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/admin/users', {
+      const response = await axios.get(`${API_BASE_URL}/api/admin/users`, {
         headers: { username: adminAuth.username, password: adminAuth.password }
       });
       setUsers(response.data);
@@ -29,7 +31,7 @@ const AdminUsers = () => {
 
   const handleDelete = async (userId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/admin/user/${userId}`, {
+      await axios.delete(`${API_BASE_URL}/api/admin/user/${userId}`, {
         headers: { username: adminAuth.username, password: adminAuth.password }
       });
       fetchUsers();
