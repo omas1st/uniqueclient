@@ -8,6 +8,9 @@ import ethereumIcon from '../icons/img2.png';
 import usdtIcon from '../icons/img3.png';
 import xrpIcon from '../icons/img4.png';
 
+// Use environment variable to determine API base URL; fallback if not provided.
+const API_BASE_URL = process.env.REACT_APP_API_URL || "https://uniquecryptowalletserver.vercel.app";
+
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -18,7 +21,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/dashboard', { 
+        const response = await axios.get(`${API_BASE_URL}/api/dashboard`, { 
           headers: { authorization: token } 
         });
         
@@ -41,6 +44,7 @@ const Dashboard = () => {
 
   const calculateTotalBalance = () => {
     if (!userData?.portfolio) return 0;
+    // Assuming that portfolio values already represent ZAR value, you can sum them.
     return Object.values(userData.portfolio).reduce((total, amount) => total + Number(amount), 0);
   };
 
@@ -106,7 +110,6 @@ const Dashboard = () => {
                     <span className="asset-name">{getAssetName(asset)}</span>
                   </div>
                 </div>
-                
                 <div className="asset-details">
                   <div className="asset-amount">
                     <span className="label">Amount:</span>
