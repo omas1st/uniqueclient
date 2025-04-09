@@ -4,6 +4,8 @@ import axios from 'axios';
 import '../styles/AdminUserSearch.css';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || "https://uniquecryptowalletserver.vercel.app";
+
 const AdminUserSearch = () => {
   const [adminAuth, setAdminAuth] = useState({ username: '', password: '' });
   const [authenticated, setAuthenticated] = useState(false);
@@ -19,13 +21,13 @@ const AdminUserSearch = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/admin/users`, {
+      const response = await axios.get(`${API_BASE_URL}/api/admin/users`, {
         headers: { username: adminAuth.username, password: adminAuth.password }
       });
       const foundUser = response.data.find(u => u.username === searchUsername);
       if (foundUser) {
         setUser(foundUser);
-        setNewPortfolio({...foundUser.portfolio});
+        setNewPortfolio({ ...foundUser.portfolio });
       } else {
         setError('User not found');
       }
@@ -36,13 +38,13 @@ const AdminUserSearch = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/admin/user/${user._id}`, {
+      await axios.put(`${API_BASE_URL}/api/admin/user/${user._id}`, {
         portfolio: newPortfolio
       }, {
         headers: { username: adminAuth.username, password: adminAuth.password }
       });
       alert('User portfolio updated successfully');
-      setUser({...user, portfolio: newPortfolio});
+      setUser({ ...user, portfolio: newPortfolio });
     } catch (err) {
       setError('Failed to update user portfolio');
     }
