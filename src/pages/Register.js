@@ -1,7 +1,10 @@
+// client/src/pages/Register.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Register.css';
 import axios from 'axios';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || "https://uniquecryptowalletserver.vercel.app";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -12,10 +15,10 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/register', { username, password });
+      await axios.post(`${API_BASE_URL}/api/auth/register`, { username, password });
       navigate('/');
     } catch(err) {
-      setError(err.response.data.message || 'Registration failed');
+      setError(err.response?.data?.message || 'Registration failed');
     }
   };
 
@@ -24,7 +27,6 @@ const Register = () => {
       <div className="auth-card">
         <h2 className="auth-title">Create Account</h2>
         {error && <div className="auth-error">{error}</div>}
-        
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="username">Username</label>
@@ -58,10 +60,7 @@ const Register = () => {
         </form>
 
         <div className="auth-footer">
-          Already have an account?{' '}
-          <a href="/" className="auth-link">
-            Sign in instead
-          </a>
+          Already have an account? <a href="/" className="auth-link">Sign in instead</a>
         </div>
       </div>
     </div>
