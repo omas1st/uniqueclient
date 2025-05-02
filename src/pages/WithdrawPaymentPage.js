@@ -6,7 +6,7 @@ import '../styles/WithdrawPaymentPage.css';
 const WithdrawPaymentPage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
-  const paymentAmount = "1,000"; // Default amount for withdraw payment in Rand
+  const paymentAmount = "5,000"; // Default amount for withdraw payment in Rand
   const bankDetails = {
     bankName: "FNB BANK",
     beneficiaryName: "Mama pty",
